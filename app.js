@@ -1,7 +1,7 @@
 // Configuration
 const CONFIG = {
-    MAPBOX_TOKEN: 'YOUR_MAPBOX_TOKEN_HERE',
-    ADSB_API_KEY: 'YOUR_ADSB_API_KEY_HERE',
+    MAPBOX_TOKEN: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NHFsZzA2YWgycXA4N2pmbDZmangifQ.saX5YWBfGCM8rHMtGT3fTg',
+    ADSB_API_KEY: '0b616e6bb7msh7bca2a9c0b72d5ap18774bjsna04e271b0aca',
     ADSB_API_HOST: 'adsbexchange-com1.p.rapidapi.com',
     BLOCKED_TAILS: ['N123AB', 'N456CD', 'N789EF', 'N280PH'], // Example blocked tails
     UPDATE_INTERVAL: 30000, // 30 seconds
