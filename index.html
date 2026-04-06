@@ -380,8 +380,10 @@ async function fetchData(){
 function ingestAircraft(raw){
   const seen = new Set();
   raw.forEach(ac => {
-    if(!ac.lat || !ac.lon || !ac.icao) return;
-    const icao = ac.icao.toUpperCase().trim();
+    // ADSB Exchange uses 'hex' not 'icao'
+    if(!ac.lat || !ac.lon) return;
+    const icao = (ac.hex || ac.icao || '').toUpperCase().trim();
+    if(!icao) return;
     if(seen.has(icao)) return;
     seen.add(icao);
 
@@ -395,8 +397,8 @@ function ingestAircraft(raw){
 
     aircraft.set(icao, {
       ...ac,
-      icao,
-      _type: classify(ac),
+      icao, // normalized from hex or icao field
+      _type: classify({...ac, icao}),
       // Normalize fields
       flight: (ac.flight || '').trim(),
       alt_baro: typeof ac.alt_baro === 'number' ? ac.alt_baro : null,
