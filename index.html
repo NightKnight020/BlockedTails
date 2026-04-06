@@ -347,13 +347,16 @@ function makeArrow(type, heading, isSelected){
 async function fetchData(){
   setStatus('Fetching...', true);
   try{
+    console.log('[BlockedTails] Fetching:', API_BASE + '/v2/lat/39.5/lon/-98.5/dist/500/');
     const r = await fetch(API_BASE + '/v2/lat/39.5/lon/-98.5/dist/500/', {
       method: 'GET',
       headers: { 'Accept': 'application/json' },
       mode: 'cors',
     });
-    if(!r.ok) throw new Error(r.status);
+    console.log('[BlockedTails] Response:', r.status, r.ok);
+    if(!r.ok) throw new Error('HTTP ' + r.status);
     const d = await r.json();
+    console.log('[BlockedTails] Aircraft:', d.ac ? d.ac.length : 'none');
     isDemo = false;
     document.getElementById('demoBanner').style.display = 'none';
     ingestAircraft(d.ac || []);
