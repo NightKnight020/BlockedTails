@@ -347,7 +347,11 @@ function makeArrow(type, heading, isSelected){
 async function fetchData(){
   setStatus('Fetching...', true);
   try{
-    const r = await fetch(API_BASE + '/v2/lat/39.5/lon/-98.5/dist/500/');
+    const r = await fetch(API_BASE + '/v2/lat/39.5/lon/-98.5/dist/500/', {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+      mode: 'cors',
+    });
     if(!r.ok) throw new Error(r.status);
     const d = await r.json();
     isDemo = false;
