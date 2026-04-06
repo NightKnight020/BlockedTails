@@ -263,7 +263,7 @@ const MIL_ICAO_RANGES = [
   [0xA00000, 0xA003FF], // US Gov special
 ];
 
-const REFRESH_MS = 30000;
+const REFRESH_MS = 60000; // 60s to avoid rate limiting
 const MAX_TRAIL  = 15;
 
 // ════════════════════════════════════════════════════
@@ -682,5 +682,6 @@ setInterval(fetchData, REFRESH_MS);
 </script>
 </body>
 </html>
+
 
 
