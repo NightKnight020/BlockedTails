@@ -675,4 +675,3 @@ setInterval(fetchData, REFRESH_MS);
 </script>
 </body>
 </html>
-
