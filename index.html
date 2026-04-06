@@ -356,7 +356,7 @@ async function fetchData(){
     console.log('[BlockedTails] Response:', r.status, r.ok);
     if(!r.ok) throw new Error('HTTP ' + r.status);
     const d = await r.json();
-    console.log('[BlockedTails] Aircraft:', d.ac ? d.ac.length : 'none');
+    console.log('[BlockedTails] Aircraft:', d.ac ? d.ac.length : 'none'); console.log('[BlockedTails] Raw keys:', Object.keys(d)); if(!d.ac) console.log('[BlockedTails] Full response:', JSON.stringify(d).substring(0, 200));
     isDemo = false;
     document.getElementById('demoBanner').style.display = 'none';
     ingestAircraft(d.ac || []);
@@ -682,6 +682,7 @@ setInterval(fetchData, REFRESH_MS);
 </script>
 </body>
 </html>
+
 
 
 
