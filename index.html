@@ -10,337 +10,352 @@
 <meta property="og:url" content="https://blockedtails.com">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="BlockedTails — Live Flight Tracker">
 <link rel="canonical" href="https://blockedtails.com/">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
-
-<!-- Leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<!-- Leaflet MarkerCluster -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
-<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-<!-- Heatmap -->
 <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --navy:#0a0f1e;--navy2:#0d1424;--card:#111827;--card2:#1a2540;
-  --blue:#3b82f6;--blue2:#60a5fa;--red:#ef4444;--green:#22c55e;
-  --yellow:#f59e0b;--purple:#a855f7;--orange:#f97316;
-  --text:#e2e8f0;--muted:#64748b;--border:#1e2d45;
+  --bg:#070c18;--bg2:#0c1220;--card:#101826;--card2:#162033;
+  --blue:#3b82f6;--red:#ef4444;--green:#22c55e;
+  --yellow:#f59e0b;--purple:#a855f7;
+  --text:#e2e8f0;--muted:#64748b;--border:#1a2840;
 }
-html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;background:var(--navy);color:var(--text)}
+html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text)}
 
-/* ── TOPBAR ── */
-#topbar{height:52px;background:rgba(10,15,30,.97);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:10px;flex-shrink:0;z-index:1000;position:relative}
-.logo{display:flex;align-items:center;gap:8px;text-decoration:none}
-.logo-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--blue),#6366f1);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 0 12px rgba(99,102,241,.35)}
-.logo-text{font-size:16px;font-weight:800;background:linear-gradient(135deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.5px}
-.tagline{font-size:11px;color:var(--muted);display:none}
-@media(min-width:640px){.tagline{display:block}}
-#search-wrap{flex:1;max-width:340px;display:flex;gap:6px;margin:0 8px}
-#search-input{flex:1;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text);font-size:12px;outline:none;transition:.2s}
-#search-input:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(59,130,246,.15)}
-#search-input::placeholder{color:var(--muted)}
-.search-btn{background:var(--blue);border:none;border-radius:7px;padding:7px 12px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
-.search-btn:hover{background:#2563eb}
-.pills{display:flex;gap:6px;margin-left:auto}
-.pill{display:flex;align-items:center;gap:5px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:500}
-.dot{width:7px;height:7px;border-radius:50%}
-.dot-blue{background:var(--blue);animation:blink 2s infinite}
-.dot-red{background:var(--red);animation:blink 1.5s infinite}
-.dot-green{background:var(--green)}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-
-/* ── LAYOUT ── */
-#app{display:flex;height:calc(100vh - 52px);overflow:hidden}
-
-/* ── SIDEBAR ── */
-#sidebar{width:340px;min-width:280px;background:var(--navy2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
-#sb-top{padding:10px 12px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
-#filter-row{display:flex;gap:3px;flex-wrap:wrap}
-.ftab{padding:4px 10px;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
+/* ── NAV ── */
+#nav{height:50px;background:rgba(7,12,24,.98);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 12px;gap:8px;z-index:1000;position:relative;flex-shrink:0}
+.logo{display:flex;align-items:center;gap:7px;text-decoration:none;margin-right:4px}
+.logo-mark{width:28px;height:28px;background:linear-gradient(135deg,#3b82f6,#6366f1);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 0 10px rgba(99,102,241,.3)}
+.logo-name{font-size:15px;font-weight:800;background:linear-gradient(135deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-.4px}
+.search-wrap{display:flex;gap:5px;flex:1;max-width:320px}
+.search-wrap input{flex:1;background:var(--card);border:1px solid var(--border);border-radius:7px;padding:6px 11px;color:var(--text);font-size:12px;outline:none;transition:border-color .15s}
+.search-wrap input:focus{border-color:var(--blue)}
+.search-wrap input::placeholder{color:var(--muted)}
+.sbtn{background:var(--blue);border:none;border-radius:6px;padding:6px 12px;color:#fff;font-size:12px;font-weight:600;cursor:pointer}
+.sbtn:hover{background:#2563eb}
+.filters{display:flex;gap:3px;margin-left:6px}
+.ftab{padding:4px 10px;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;transition:all .1s}
 .ftab.on{background:var(--blue);color:#fff}
 .ftab:hover:not(.on){background:var(--card);color:var(--text)}
-#sort-row{display:flex;align-items:center;gap:6px}
-#sort-select{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:4px 8px;color:var(--text);font-size:11px;outline:none;flex:1}
-#refresh-btn{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--text);font-size:11px;cursor:pointer;white-space:nowrap}
-#refresh-btn:hover{border-color:var(--blue);color:var(--blue)}
-#last-updated{font-size:10px;color:var(--muted);text-align:right}
-#aircraft-list{flex:1;overflow-y:auto;padding:6px}
-#aircraft-list::-webkit-scrollbar{width:3px}
-#aircraft-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.pills{display:flex;gap:5px;margin-left:auto}
+.pill{display:flex;align-items:center;gap:4px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:500}
+.dot{width:6px;height:6px;border-radius:50%}
+.dblue{background:var(--blue);animation:pulse 2s infinite}
+.dred{background:var(--red);animation:pulse 1.5s infinite}
+.dgreen{background:var(--green)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ── CARDS ── */
-.ac-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 11px;margin-bottom:5px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
-.ac-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px 0 0 2px}
-.ac-card.commercial::before{background:var(--blue)}
-.ac-card.military::before{background:var(--yellow)}
-.ac-card.blocked::before{background:var(--red)}
-.ac-card.private::before{background:var(--purple)}
-.ac-card:hover{border-color:rgba(59,130,246,.4);transform:translateX(2px);background:var(--card2)}
-.ac-card.sel{border-color:var(--blue);background:var(--card2);box-shadow:0 0 0 1px rgba(59,130,246,.2)}
-.card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
-.ac-cs{font-size:13px;font-weight:700;display:flex;align-items:center;gap:5px}
-.badge{padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.5px}
-.badge-blk{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
-.badge-mil{background:rgba(245,158,11,.15);color:var(--yellow);border:1px solid rgba(245,158,11,.3)}
-.badge-emer{background:rgba(239,68,68,.3);color:#fff;border:1px solid var(--red);animation:blink .8s infinite}
-.ac-hex{font-size:10px;color:var(--muted);font-family:monospace}
-.card-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
-.sbox{background:var(--navy);border-radius:5px;padding:5px 6px}
-.slbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
-.sval{font-size:11px;font-weight:600;margin-top:1px}
-.verify-row{display:flex;gap:8px;margin-top:5px;justify-content:flex-end}
-.vlink{font-size:9px;color:var(--muted);text-decoration:none}
-.vlink:hover{color:var(--blue)}
-.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:180px;color:var(--muted);text-align:center;gap:6px;font-size:12px}
+/* ── LAYOUT ── */
+#app{display:flex;height:calc(100vh - 50px);overflow:hidden}
+
+/* ── PANEL ── */
+#panel{width:320px;min-width:280px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
+
+/* STATS VIEW */
+#stats-view{padding:14px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;flex:1}
+#stats-view::-webkit-scrollbar{width:3px}
+#stats-view::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.stats-header{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:2px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:12px;text-align:center}
+.stat-val{font-size:22px;font-weight:800;line-height:1}
+.stat-lbl{font-size:10px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+.stat-card.blue .stat-val{color:var(--blue)}
+.stat-card.red .stat-val{color:var(--red)}
+.stat-card.yellow .stat-val{color:var(--yellow)}
+.stat-card.purple .stat-val{color:var(--purple)}
+
+.recent-title{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.recent-list{display:flex;flex-direction:column;gap:4px}
+.recent-row{background:var(--card);border:1px solid var(--border);border-radius:7px;padding:8px 10px;cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:8px}
+.recent-row:hover{border-color:rgba(59,130,246,.4);background:var(--card2)}
+.recent-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.recent-info{flex:1;min-width:0}
+.recent-cs{font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.recent-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.recent-alt{font-size:11px;font-weight:600;text-align:right;flex-shrink:0}
+
+.info-box{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:12px;font-size:11px;color:var(--muted);line-height:1.6}
+.info-box h4{color:var(--text);font-size:12px;margin-bottom:6px}
+.info-box details summary{cursor:pointer;color:var(--blue);font-size:11px;font-weight:600;list-style:none}
+.info-box details summary::-webkit-details-marker{display:none}
+.info-box details[open] .detail-body{margin-top:8px}
+
+/* DETAIL VIEW */
+#detail-view{display:none;flex-direction:column;flex:1;overflow:hidden}
+#detail-view.on{display:flex}
+#dv-header{padding:12px 14px;border-bottom:1px solid var(--border);flex-shrink:0}
+.dv-back{background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer;display:flex;align-items:center;gap:4px;margin-bottom:8px;padding:0;transition:.15s}
+.dv-back:hover{color:var(--blue)}
+.dv-call{font-size:22px;font-weight:800;letter-spacing:-.5px}
+.dv-tags{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap}
+.dtag{padding:2px 7px;border-radius:3px;font-size:9px;font-weight:700;border:1px solid;white-space:nowrap}
+.tag-emer{background:rgba(239,68,68,.2);color:var(--red);border-color:rgba(239,68,68,.4);animation:pulse .8s infinite}
+#dv-body{flex:1;overflow-y:auto;padding:12px 14px}
+#dv-body::-webkit-scrollbar{width:3px}
+#dv-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.dv-section{margin-bottom:14px}
+.dv-section-title{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px}
+.dv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.dv-grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:10px}
+.dbox{background:var(--card);border-radius:7px;padding:8px;text-align:center}
+.dbox-l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.dbox-v{font-size:13px;font-weight:700}
+
+/* History table */
+.hist-table{width:100%;border-collapse:collapse;font-size:10px}
+.hist-table th{color:var(--muted);text-align:left;padding:3px 6px;font-weight:600;font-size:9px;text-transform:uppercase;letter-spacing:.4px}
+.hist-table td{padding:4px 6px;border-top:1px solid var(--border);font-family:monospace;color:var(--muted)}
+.hist-table tr:hover td{background:var(--card2);color:var(--text)}
+
+/* External history iframe */
+.ext-hist{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.ext-hist-title{font-size:11px;font-weight:600;color:var(--text)}
+.ext-hist-sub{font-size:10px;color:var(--muted);line-height:1.5}
+.ext-links{display:flex;flex-direction:column;gap:5px}
+.ext-link{display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;text-decoration:none;transition:.15s;color:var(--text)}
+.ext-link:hover{border-color:var(--blue);color:var(--blue)}
+.ext-link-name{font-size:11px;font-weight:600}
+.ext-link-desc{font-size:9px;color:var(--muted);margin-top:2px}
+.ext-link-arrow{color:var(--muted);font-size:12px}
 
 /* ── MAP ── */
 #map-wrap{flex:1;position:relative;overflow:hidden}
-#map{width:100%;height:100%;background:#0d1117}
+#map{width:100%;height:100%}
+.leaflet-tile{filter:brightness(.82) saturate(.65)}
+.leaflet-tooltip{background:rgba(7,12,24,.95)!important;border:1px solid #1a2840!important;color:#e2e8f0!important;font-size:11px!important;padding:4px 8px!important;border-radius:6px!important;box-shadow:0 4px 12px rgba(0,0,0,.4)!important}
+.leaflet-tooltip::before{display:none!important}
 
-/* ── MAP OVERLAYS ── */
-#map-tl{position:absolute;top:12px;left:12px;z-index:900;display:flex;flex-direction:column;gap:6px}
-#map-tr{position:absolute;top:12px;right:12px;z-index:900;display:flex;flex-direction:column;gap:5px}
-.map-btn{background:rgba(10,15,30,.93);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:7px;padding:7px 12px;color:var(--text);font-size:11px;font-weight:500;cursor:pointer;transition:.15s;white-space:nowrap;text-align:left}
-.map-btn:hover{border-color:var(--blue);color:var(--blue)}
-.map-btn.on{border-color:var(--blue);color:var(--blue);background:rgba(59,130,246,.08)}
-.status-badge{background:rgba(10,15,30,.93);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:11px;display:flex;align-items:center;gap:6px;font-weight:500}
-.spinner-sm{display:inline-block;width:10px;height:10px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .75s linear infinite}
+/* Map controls */
+.map-ctrl{position:absolute;top:12px;right:12px;z-index:800;display:flex;flex-direction:column;gap:5px}
+.mbtn{background:rgba(7,12,24,.93);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:7px;padding:7px 12px;color:var(--text);font-size:11px;font-weight:500;cursor:pointer;transition:.15s;white-space:nowrap;text-align:left}
+.mbtn:hover{border-color:var(--blue);color:var(--blue)}
+.mbtn.on{border-color:var(--blue);color:var(--blue);background:rgba(59,130,246,.08)}
+
+.status-wrap{position:absolute;top:12px;left:12px;z-index:800}
+.status-pill{background:rgba(7,12,24,.93);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:11px;display:flex;align-items:center;gap:6px;font-weight:500}
+.spin{display:inline-block;width:10px;height:10px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── LEGEND ── */
-#legend{position:absolute;bottom:20px;right:12px;background:rgba(10,15,30,.93);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:10px;padding:10px 14px;z-index:800}
-.leg-title{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px}
-.leg-row{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted);margin-bottom:4px}
-.leg-arrow{font-size:13px;line-height:1}
+/* Legend */
+.legend{position:absolute;bottom:28px;right:12px;z-index:800;background:rgba(7,12,24,.93);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:9px;padding:9px 13px}
+.leg-t{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.leg-r{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--muted);margin-bottom:3px}
 
-/* ── DETAIL PANEL ── */
-#detail{position:absolute;bottom:0;left:0;right:0;background:rgba(10,15,30,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:14px 16px;z-index:910;display:none;max-height:45%;overflow-y:auto}
-#detail.on{display:block;animation:slideUp .2s ease}
-@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
-.detail-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
-.detail-call{font-size:20px;font-weight:800;letter-spacing:-.5px}
-.detail-tags{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap}
-.dtag{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;border:1px solid}
-.detail-close{background:var(--card);border:1px solid var(--border);border-radius:6px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px;color:var(--muted);flex-shrink:0}
-.detail-close:hover{color:var(--text)}
-.detail-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px}
-.detail-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
-.dstat{background:var(--card);border-radius:7px;padding:8px 10px;text-align:center}
-.dstat-l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
-.dstat-v{font-size:13px;font-weight:700}
-.hist-section{margin-bottom:10px}
-.hist-title{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;display:flex;justify-content:space-between}
-.hist-list{max-height:100px;overflow-y:auto;display:flex;flex-direction:column;gap:3px}
-.hist-list::-webkit-scrollbar{width:3px}
-.hist-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.hist-row{display:grid;grid-template-columns:70px 1fr 80px 60px;gap:6px;padding:4px 8px;background:var(--card);border-radius:5px;font-size:10px;color:var(--muted);font-family:monospace}
-.src-row{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:var(--muted)}
-.src-row a{color:var(--blue);text-decoration:none;margin-left:8px}
-.src-row a:hover{text-decoration:underline}
+/* Loading */
+#overlay{position:absolute;inset:0;background:rgba(7,12,24,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2000}
+.spin-lg{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:12px}
+#overlay p{font-size:13px;color:var(--muted);font-weight:500}
+#overlay small{font-size:10px;color:var(--border);margin-top:4px}
 
-/* ── INFO SECTION ── */
-#info-toggle{position:absolute;bottom:20px;left:12px;z-index:800}
-.info-btn{background:rgba(10,15,30,.93);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:7px;padding:7px 12px;color:var(--muted);font-size:11px;cursor:pointer;transition:.15s}
-.info-btn:hover{border-color:var(--blue);color:var(--blue)}
-#info-panel{position:absolute;bottom:52px;left:12px;z-index:800;background:rgba(10,15,30,.97);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:12px;padding:16px;max-width:320px;display:none;font-size:12px;line-height:1.6;color:var(--muted)}
-#info-panel.on{display:block}
-#info-panel h3{color:var(--text);font-size:13px;margin-bottom:8px}
-#info-panel p{margin-bottom:8px}
-
-/* ── LOADING ── */
-#overlay{position:absolute;inset:0;background:rgba(10,15,30,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1500}
-.spinner-lg{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .75s linear infinite;margin-bottom:14px}
-
-/* ── TOAST ── */
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 16px;font-size:12px;font-weight:500;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+/* Toast */
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--card);border:1px solid var(--border);border-radius:7px;padding:8px 16px;font-size:12px;font-weight:500;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap}
 #toast.show{transform:translateX(-50%) translateY(0)}
 #toast.ok{border-color:var(--green);color:var(--green)}
 #toast.err{border-color:var(--red);color:var(--red)}
 #toast.info{border-color:var(--blue);color:var(--blue)}
 
-/* ── FOOTER ── */
-#footer{position:fixed;bottom:0;left:0;right:0;background:rgba(10,15,30,.9);border-top:1px solid var(--border);padding:5px 14px;font-size:10px;color:var(--muted);display:flex;align-items:center;justify-content:space-between;z-index:500;backdrop-filter:blur(8px)}
-#footer a{color:var(--muted);text-decoration:none;margin-left:10px}
+/* Footer */
+#footer{position:fixed;bottom:0;left:0;right:0;background:rgba(7,12,24,.92);border-top:1px solid var(--border);padding:4px 14px;font-size:10px;color:var(--muted);display:flex;align-items:center;justify-content:space-between;z-index:500;backdrop-filter:blur(8px)}
+#footer a{color:var(--muted);text-decoration:none;margin-left:8px}
 #footer a:hover{color:var(--blue)}
 
-/* ── MOBILE ── */
 @media(max-width:768px){
-  #sidebar{display:none}
+  #panel{display:none}
+  .filters{display:none}
   .pills{display:none}
-  .tagline{display:none}
 }
-
-/* Leaflet dark tiles filter */
-.leaflet-tile{filter:brightness(.85) saturate(.7)}
-.leaflet-tooltip{background:rgba(10,15,30,.95)!important;border:1px solid #1e2d45!important;color:#e2e8f0!important;font-size:11px!important;padding:4px 8px!important;border-radius:6px!important}
-.leaflet-tooltip::before{display:none!important}
-.marker-cluster-small,.marker-cluster-medium,.marker-cluster-large{background:rgba(59,130,246,.2)!important;border:2px solid rgba(59,130,246,.5)!important}
-.marker-cluster-small div,.marker-cluster-medium div,.marker-cluster-large div{background:rgba(59,130,246,.5)!important;color:#fff!important;font-weight:700!important}
 </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
-<nav id="topbar">
+<nav id="nav">
   <a class="logo" href="/">
-    <div class="logo-icon">✈</div>
-    <span class="logo-text">BlockedTails</span>
+    <div class="logo-mark">✈</div>
+    <span class="logo-name">BlockedTails</span>
   </a>
-  <span class="tagline">Live blocked tail & military flight tracker</span>
-  <div id="search-wrap">
-    <input id="search-input" type="text" placeholder="Search tail # or callsign (e.g. N280PH)…" autocomplete="off" spellcheck="false">
-    <button class="search-btn" onclick="doSearch()">Find</button>
+  <div class="search-wrap">
+    <input id="q" type="text" placeholder="Search tail # or callsign…" autocomplete="off" spellcheck="false">
+    <button class="sbtn" onclick="doSearch()">Find</button>
+  </div>
+  <div class="filters">
+    <button class="ftab on" onclick="setFilter('all',this)">All</button>
+    <button class="ftab" onclick="setFilter('blocked',this)">🔴 Blocked</button>
+    <button class="ftab" onclick="setFilter('military',this)">🟡 Military</button>
+    <button class="ftab" onclick="setFilter('private',this)">🟣 Private</button>
   </div>
   <div class="pills">
-    <div class="pill"><div class="dot dot-blue"></div><span id="pill-total">0</span> live</div>
-    <div class="pill"><div class="dot dot-red"></div><span id="pill-blocked">0</span> blocked</div>
-    <div class="pill"><div class="dot dot-green"></div>LIVE</div>
+    <div class="pill"><div class="dot dblue"></div><span id="p-total">0</span> live</div>
+    <div class="pill"><div class="dot dred"></div><span id="p-blocked">0</span> blocked</div>
+    <div class="pill"><div class="dot dgreen"></div>LIVE</div>
   </div>
 </nav>
 
-<!-- MAIN APP -->
 <div id="app">
 
-  <!-- SIDEBAR -->
-  <div id="sidebar">
-    <div id="sb-top">
-      <div id="filter-row">
-        <button class="ftab on" onclick="setFilter('all',this)">All <span id="cnt-all">(0)</span></button>
-        <button class="ftab" onclick="setFilter('blocked',this)">🔴 Blocked <span id="cnt-blocked">(0)</span></button>
-        <button class="ftab" onclick="setFilter('military',this)">🟡 Military <span id="cnt-mil">(0)</span></button>
-        <button class="ftab" onclick="setFilter('private',this)">🟣 Private <span id="cnt-priv">(0)</span></button>
+  <!-- SMART PANEL -->
+  <div id="panel">
+
+    <!-- Stats view (default) -->
+    <div id="stats-view">
+      <div>
+        <div class="stats-header">Live Overview</div>
+        <div class="stat-grid" style="margin-top:8px">
+          <div class="stat-card blue"><div class="stat-val" id="s-total">—</div><div class="stat-lbl">Total Live</div></div>
+          <div class="stat-card red"><div class="stat-val" id="s-blocked">—</div><div class="stat-lbl">Blocked Tails</div></div>
+          <div class="stat-card yellow"><div class="stat-val" id="s-mil">—</div><div class="stat-lbl">Military</div></div>
+          <div class="stat-card purple"><div class="stat-val" id="s-priv">—</div><div class="stat-lbl">Private/VIP</div></div>
+        </div>
       </div>
-      <div id="sort-row">
-        <select id="sort-select" onchange="renderList()">
-          <option value="type">Sort: Type</option>
-          <option value="alt">Sort: Altitude</option>
-          <option value="speed">Sort: Speed</option>
-          <option value="callsign">Sort: Callsign</option>
-        </select>
-        <button id="refresh-btn" onclick="refreshNow()">🔄 Refresh</button>
+
+      <div>
+        <div class="recent-title">
+          <span>Notable Aircraft</span>
+          <span style="font-size:9px;color:var(--muted)">Click to inspect</span>
+        </div>
+        <div class="recent-list" id="notable-list">
+          <div style="font-size:11px;color:var(--muted);padding:8px 0">Loading…</div>
+        </div>
       </div>
-      <div id="last-updated">Loading…</div>
+
+      <div class="info-box">
+        <h4>What are Blocked Tails?</h4>
+        <details>
+          <summary>Learn more ▸</summary>
+          <div class="detail-body" style="font-size:11px;color:var(--muted);line-height:1.6;margin-top:6px">
+            <p>Some aircraft owners request their registration be blocked from FlightAware and FR24. ADS-B Exchange does <strong style="color:var(--text)">not</strong> honor these requests — it captures raw transponder signals, making blocked aircraft visible here.</p>
+            <p style="margin-top:6px">Common blocked registrations: government aircraft, military support planes, private jets of public figures.</p>
+            <p style="margin-top:6px;font-size:10px">Data: ADS-B Exchange · Informational use only</p>
+          </div>
+        </details>
+      </div>
+
+      <div style="font-size:10px;color:var(--muted);text-align:center;padding:4px 0" id="last-upd">—</div>
     </div>
-    <div id="aircraft-list"></div>
+
+    <!-- Detail view (when aircraft selected) -->
+    <div id="detail-view">
+      <div id="dv-header">
+        <button class="dv-back" onclick="closeDetail()">← Back to overview</button>
+        <div class="dv-call" id="dv-call">—</div>
+        <div class="dv-tags" id="dv-tags"></div>
+      </div>
+      <div id="dv-body">
+        <!-- Live position -->
+        <div class="dv-section">
+          <div class="dv-section-title">Live Position</div>
+          <div class="dv-grid5">
+            <div class="dbox"><div class="dbox-l">Alt</div><div class="dbox-v" id="dv-alt">—</div></div>
+            <div class="dbox"><div class="dbox-l">Speed</div><div class="dbox-v" id="dv-spd">—</div></div>
+            <div class="dbox"><div class="dbox-l">Heading</div><div class="dbox-v" id="dv-hdg">—</div></div>
+            <div class="dbox"><div class="dbox-l">V/S</div><div class="dbox-v" id="dv-vsi">—</div></div>
+            <div class="dbox"><div class="dbox-l">Squawk</div><div class="dbox-v" id="dv-sqk">—</div></div>
+          </div>
+          <div class="dv-grid">
+            <div class="dbox"><div class="dbox-l">ICAO Hex</div><div class="dbox-v" style="font-size:11px;font-family:monospace" id="dv-hex">—</div></div>
+            <div class="dbox"><div class="dbox-l">Latitude</div><div class="dbox-v" style="font-size:11px" id="dv-lat">—</div></div>
+            <div class="dbox"><div class="dbox-l">Longitude</div><div class="dbox-v" style="font-size:11px" id="dv-lon">—</div></div>
+          </div>
+        </div>
+
+        <!-- Session trail history -->
+        <div class="dv-section" id="trail-section">
+          <div class="dv-section-title" id="trail-title">Session Trail — 0 positions</div>
+          <div style="overflow-x:auto">
+            <table class="hist-table" id="trail-table">
+              <thead><tr><th>Time</th><th>Lat</th><th>Lon</th><th>Alt</th><th>Speed</th></tr></thead>
+              <tbody id="trail-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Full history links -->
+        <div class="dv-section">
+          <div class="dv-section-title">Full Flight History</div>
+          <div class="ext-hist">
+            <div class="ext-hist-sub">Track this aircraft's last 30 days of flights across these public databases:</div>
+            <div class="ext-links" id="ext-links">
+              <a class="ext-link" id="link-adsb" href="#" target="_blank" rel="noopener">
+                <div><div class="ext-link-name">ADS-B Exchange</div><div class="ext-link-desc">Full history · shows blocked tails · free</div></div>
+                <span class="ext-link-arrow">↗</span>
+              </a>
+              <a class="ext-link" id="link-fa" href="#" target="_blank" rel="noopener">
+                <div><div class="ext-link-name">FlightAware</div><div class="ext-link-desc">Route history · departures & arrivals</div></div>
+                <span class="ext-link-arrow">↗</span>
+              </a>
+              <a class="ext-link" id="link-fr" href="#" target="_blank" rel="noopener">
+                <div><div class="ext-link-name">FlightRadar24</div><div class="ext-link-desc">Playback · timeline view</div></div>
+                <span class="ext-link-arrow">↗</span>
+              </a>
+              <a class="ext-link" id="link-pw" href="#" target="_blank" rel="noopener">
+                <div><div class="ext-link-name">Planefinder</div><div class="ext-link-desc">Alternative tracker · good for private</div></div>
+                <span class="ext-link-arrow">↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- MAP -->
   <div id="map-wrap">
     <div id="map"></div>
 
-    <!-- Status -->
-    <div id="map-tl">
-      <div class="status-badge" id="status-badge">
-        <span id="status-text">Connecting…</span>
+    <div class="status-wrap">
+      <div class="status-pill" id="status-pill">
+        <span id="status-txt">Connecting…</span>
       </div>
     </div>
 
-    <!-- Controls -->
-    <div id="map-tr">
-      <button class="map-btn" onclick="resetView()">🌍 Reset View</button>
-      <button class="map-btn on" id="btn-trails" onclick="toggleTrails()">〰 Trails: ON</button>
-      <button class="map-btn" id="btn-cluster" onclick="toggleCluster()">⚪ Cluster: ON</button>
-      <button class="map-btn" id="btn-tile" onclick="toggleTile()">🛰 Satellite</button>
-      <button class="map-btn" id="btn-heat" onclick="toggleHeat()">🌡 Heatmap</button>
+    <div class="map-ctrl">
+      <button class="mbtn" onclick="resetView()">🌍 Reset</button>
+      <button class="mbtn on" id="btn-trails" onclick="toggleTrails()">〰 Trails</button>
+      <button class="mbtn" id="btn-sat" onclick="toggleSat()">🛰 Satellite</button>
+      <button class="mbtn" id="btn-heat" onclick="toggleHeat()">🌡 Heatmap</button>
     </div>
 
-    <!-- Legend -->
-    <div id="legend">
-      <div class="leg-title">Legend</div>
-      <div class="leg-row"><span class="leg-arrow" style="color:var(--blue)">▲</span>Commercial</div>
-      <div class="leg-row"><span class="leg-arrow" style="color:var(--red)">▲</span>Blocked Tail</div>
-      <div class="leg-row"><span class="leg-arrow" style="color:var(--yellow)">▲</span>Military</div>
-      <div class="leg-row"><span class="leg-arrow" style="color:var(--purple)">▲</span>Private / VIP</div>
-      <div style="border-top:1px solid var(--border);margin:6px 0;font-size:9px;color:var(--muted)">▲ points direction of travel</div>
+    <div class="legend">
+      <div class="leg-t">Legend</div>
+      <div class="leg-r"><span style="color:var(--blue);font-size:12px">▲</span>Commercial</div>
+      <div class="leg-r"><span style="color:var(--red);font-size:12px">▲</span>Blocked</div>
+      <div class="leg-r"><span style="color:var(--yellow);font-size:12px">▲</span>Military</div>
+      <div class="leg-r"><span style="color:var(--purple);font-size:12px">▲</span>Private/VIP</div>
     </div>
 
-    <!-- Info toggle -->
-    <div id="info-toggle">
-      <button class="info-btn" onclick="toggleInfo()">❓ What are Blocked Tails?</button>
-    </div>
-
-    <div id="info-panel">
-      <h3>What are Blocked Tails?</h3>
-      <p>Some aircraft owners request that their registration (tail number) be blocked from public flight tracking databases like FlightAware and FlightRadar24. This is often done by government agencies, military contractors, wealthy individuals, or corporations who want privacy.</p>
-      <p>However, ADS-B Exchange does <strong>not</strong> honor these blocking requests — their receivers capture raw transponder signals and publish all data. This means blocked aircraft are still visible here.</p>
-      <p>Common blocked registrations include private jets, government aircraft, and military support planes.</p>
-      <p style="color:var(--muted);font-size:10px">Data source: ADS-B Exchange. For informational use only.</p>
-    </div>
-
-    <!-- Detail panel -->
-    <div id="detail">
-      <div class="detail-head">
-        <div>
-          <div class="detail-call" id="d-call">—</div>
-          <div class="detail-tags" id="d-tags"></div>
-        </div>
-        <div class="detail-close" onclick="closeDetail()">✕</div>
-      </div>
-      <div class="detail-grid">
-        <div class="dstat"><div class="dstat-l">Altitude</div><div class="dstat-v" id="d-alt">—</div></div>
-        <div class="dstat"><div class="dstat-l">Speed</div><div class="dstat-v" id="d-spd">—</div></div>
-        <div class="dstat"><div class="dstat-l">Heading</div><div class="dstat-v" id="d-hdg">—</div></div>
-        <div class="dstat"><div class="dstat-l">Vert Rate</div><div class="dstat-v" id="d-vsi">—</div></div>
-        <div class="dstat"><div class="dstat-l">Squawk</div><div class="dstat-v" id="d-sqk">—</div></div>
-      </div>
-      <div class="detail-grid3">
-        <div class="dstat"><div class="dstat-l">ICAO Hex</div><div class="dstat-v" style="font-size:11px;font-family:monospace" id="d-hex">—</div></div>
-        <div class="dstat"><div class="dstat-l">Latitude</div><div class="dstat-v" style="font-size:11px" id="d-lat">—</div></div>
-        <div class="dstat"><div class="dstat-l">Longitude</div><div class="dstat-v" style="font-size:11px" id="d-lon">—</div></div>
-      </div>
-      <div class="hist-section">
-        <div class="hist-title"><span>〰 Position History</span><span id="d-hist-count" style="color:var(--muted)">0 points</span></div>
-        <div class="hist-list" id="d-hist"></div>
-      </div>
-      <div class="src-row">
-        <span>Source: ADS-B Exchange · live transponder data</span>
-        <div>
-          <a id="d-link-adsb" href="#" target="_blank">ADS-B Exchange ↗</a>
-          <a id="d-link-fa" href="#" target="_blank">FlightAware ↗</a>
-          <a id="d-link-fr" href="#" target="_blank">FR24 ↗</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Loading overlay -->
     <div id="overlay">
-      <div class="spinner-lg"></div>
-      <div style="font-size:13px;color:var(--muted);font-weight:500">Loading live ADS-B data…</div>
-      <div style="font-size:11px;color:var(--border);margin-top:6px">Querying multiple US regions</div>
+      <div class="spin-lg"></div>
+      <p>Loading live ADS-B data…</p>
+      <small>Querying US airspace</small>
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
 <div id="footer">
-  <span>⚠ Data is public ADS-B for informational use only. Not for navigation. Not affiliated with any government or military.</span>
+  <span>Data: ADS-B Exchange · Informational only · Not for navigation · Not affiliated with any government or military</span>
   <div>
     <a href="/privacy.html">Privacy</a>
     <a href="/terms.html">Terms</a>
     <a href="https://github.com/NightKnight020/BlockedTails" target="_blank">GitHub ↗</a>
   </div>
 </div>
-
 <div id="toast"></div>
 
 <script>
-// ══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
 // CONFIG
-// ══════════════════════════════════════════════════════════
-const API_BASE = 'https://blockedtails-api.mitpatel020.workers.dev';
-const REFRESH_MS = 60000;
-const MAX_TRAIL = 20;
+// ═══════════════════════════════════════════════════
+const API   = 'https://blockedtails-api.mitpatel020.workers.dev';
+const REFRESH = 60000;
+const MAX_TRAIL = 30;
 
 const BLOCKED = new Set(['N280PH','N900SK','N1SP','N2SP','N3SP','N4SP','N5SP','N8PH','N168PH','N170PH']);
-const MIL_PFX = ['RCH','RRR','JAKE','DUKE','REACH','EVAC','PAT','SAM','TOUGH','KNIFE','ATLAS','DARK','GHOST','VADER','HOOK','IRON','STEEL','SPAR','MAGMA','ROCKY','FLASH','ZEUS','BOXER','RACER','RAVEN','EAGLE','HAWK','SWORD','SHIELD','LANCE'];
+const MIL_PFX = ['RCH','RRR','JAKE','DUKE','REACH','EVAC','PAT','SAM','TOUGH','KNIFE','ATLAS','DARK','GHOST','VADER','HOOK','IRON','STEEL','SPAR','MAGMA','ROCKY','FLASH','ZEUS','BOXER','RACER','RAVEN','EAGLE','HAWK'];
 const MIL_HEX = [[0xAE0000,0xAEFFFF],[0xA00000,0xA003FF]];
-const COLORS = {blocked:'#ef4444',military:'#f59e0b',private:'#a855f7',commercial:'#3b82f6'};
+const COLORS  = {blocked:'#ef4444',military:'#f59e0b',private:'#a855f7',commercial:'#3b82f6'};
 const REGIONS = [
   '/v2/lat/39.5/lon/-98.5/dist/500/',
   '/v2/lat/30.0/lon/-90.0/dist/350/',
@@ -349,407 +364,420 @@ const REGIONS = [
   '/v2/lat/41.0/lon/-74.0/dist/350/',
 ];
 
-// ══════════════════════════════════════════════════════════
-// MAP
-// ══════════════════════════════════════════════════════════
-const map = L.map('map',{zoomControl:false,preferCanvas:true}).setView([39.5,-98.5],5);
+// ═══════════════════════════════════════════════════
+// MAP — Canvas renderer for performance
+// ═══════════════════════════════════════════════════
+const map = L.map('map', {
+  zoomControl: false,
+  preferCanvas: true,       // Canvas: handles 5000+ markers at 60fps
+  renderer: L.canvas(),
+}).setView([39.5,-98.5], 5);
+
 L.control.zoom({position:'bottomleft'}).addTo(map);
 
 const TILES = {
-  dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© CartoDB © OSM',maxZoom:19}),
+  dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'© CartoDB',maxZoom:19}),
   sat:  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri',maxZoom:19}),
 };
 TILES.dark.addTo(map);
 
-// Cluster group
-let clusterGroup = L.markerClusterGroup({
-  maxClusterRadius:40,
-  spiderfyOnMaxZoom:true,
-  showCoverageOnHover:false,
-  zoomToBoundsOnClick:true,
-  iconCreateFunction(cluster){
-    const cnt = cluster.getChildCount();
-    return L.divIcon({
-      html:'<div style="background:rgba(59,130,246,.5);border:2px solid rgba(59,130,246,.8);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700">'+cnt+'</div>',
-      iconSize:[32,32],iconAnchor:[16,16],className:''
-    });
-  }
-});
-map.addLayer(clusterGroup);
+let useSat=false, showTrails=true, heatMode=false;
+let heatLayer=null, trailLayerGroup=L.layerGroup().addTo(map);
 
-let useSat=false, showTrails=true, useCluster=true, heatMode=false;
-let heatLayer=null;
-
-function toggleTile(){
-  useSat=!useSat;
-  if(useSat){map.removeLayer(TILES.dark);TILES.sat.addTo(map);document.getElementById('btn-tile').textContent='🌙 Dark Map';}
-  else{map.removeLayer(TILES.sat);TILES.dark.addTo(map);document.getElementById('btn-tile').textContent='🛰 Satellite';}
-}
-function toggleTrails(){
-  showTrails=!showTrails;
-  const b=document.getElementById('btn-trails');
-  b.textContent='〰 Trails: '+(showTrails?'ON':'OFF');
-  b.classList.toggle('on',showTrails);
-  renderMarkers();
-}
-function toggleCluster(){
-  useCluster=!useCluster;
-  const b=document.getElementById('btn-cluster');
-  b.textContent='⚪ Cluster: '+(useCluster?'ON':'OFF');
-  b.classList.toggle('on',useCluster);
-  renderMarkers();
-}
-function toggleHeat(){
-  heatMode=!heatMode;
-  const b=document.getElementById('btn-heat');
-  b.classList.toggle('on',heatMode);
-  renderMarkers();
-}
-function toggleInfo(){
-  document.getElementById('info-panel').classList.toggle('on');
-}
-function resetView(){map.flyTo([39.5,-98.5],5,{duration:1});}
-
-// ══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
 // STATE
-// ══════════════════════════════════════════════════════════
-let aircraft=new Map();
-let trails=new Map();    // hex -> [{lat,lon,alt,gs,ts}]
-let markers=new Map();
-let trailLines=new Map();
-let selected=null, filter='all', lastFetchTime=Date.now();
+// ═══════════════════════════════════════════════════
+let aircraft = new Map();   // hex → ac object
+let trails   = new Map();   // hex → [{lat,lon,alt,gs,ts}]
+let markers  = new Map();   // hex → L.marker
+let selected = null;
+let filter   = 'all';
+let lastFetch = Date.now();
 
-// ══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
 // CLASSIFY
-// ══════════════════════════════════════════════════════════
-function classify(ac){
-  const cs=(ac.flight||'').trim().toUpperCase();
-  const hex=(ac.hex||'').toUpperCase();
-  const n=parseInt(ac.hex,16)||0;
-  if(BLOCKED.has(cs)||BLOCKED.has(hex)) return 'blocked';
-  if(MIL_PFX.some(p=>cs.startsWith(p))) return 'military';
-  if(MIL_HEX.some(([lo,hi])=>n>=lo&&n<=hi)) return 'military';
-  if(/^N[0-9]/.test(cs)&&cs.length<=7) return 'private';
+// ═══════════════════════════════════════════════════
+function classify(hex, flight){
+  const cs = (flight||'').trim().toUpperCase();
+  const n  = parseInt(hex,16)||0;
+  if(BLOCKED.has(cs)||BLOCKED.has(hex.toUpperCase())) return 'blocked';
+  if(MIL_PFX.some(p=>cs.startsWith(p)))               return 'military';
+  if(MIL_HEX.some(([lo,hi])=>n>=lo&&n<=hi))           return 'military';
+  if(/^N[0-9]/.test(cs)&&cs.length<=7)                return 'private';
   return 'commercial';
 }
 
-// ══════════════════════════════════════════════════════════
-// FETCH
-// ══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
+// FETCH — all regions in parallel
+// ═══════════════════════════════════════════════════
 async function fetchData(){
-  setStatus('Fetching…',true);
+  setStatus('Fetching…', true);
   try{
-    let all=[];
-    for(const r of REGIONS){
-      try{
-        const res=await fetch(API_BASE+r,{method:'GET',mode:'cors'});
-        if(res.ok){const d=await res.json();if(d.ac)all=all.concat(d.ac);}
-      }catch(e){}
-      await new Promise(r=>setTimeout(r,150));
-    }
-    ingest(all);
-    lastFetchTime=Date.now();
-    const ts=new Date().toLocaleTimeString();
-    setStatus(aircraft.size.toLocaleString()+' aircraft · '+ts,false);
-    document.getElementById('last-updated').textContent='Updated: '+ts;
-    toast('✅ '+aircraft.size+' aircraft loaded','ok');
+    // Fire ALL regions simultaneously
+    const results = await Promise.allSettled(
+      REGIONS.map(r => fetch(API+r,{method:'GET',mode:'cors'}).then(res=>res.json()))
+    );
+    const all = [];
+    results.forEach(r=>{ if(r.status==='fulfilled'&&r.value.ac) all.push(...r.value.ac); });
+    if(all.length) ingest(all);
+    lastFetch = Date.now();
+    const ts = new Date().toLocaleTimeString();
+    setStatus(aircraft.size.toLocaleString()+' aircraft · '+ts, false);
+    document.getElementById('last-upd').textContent='Updated '+ts;
   }catch(e){
-    setStatus('Fetch failed · '+new Date().toLocaleTimeString(),false);
+    setStatus('Fetch error · '+new Date().toLocaleTimeString(), false);
   }
   renderAll();
   hideOverlay();
 }
 
-// ══════════════════════════════════════════════════════════
-// INGEST — dedup by hex
-// ══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
+// INGEST — diff-based: only update changed aircraft
+// ═══════════════════════════════════════════════════
 function ingest(raw){
-  const seen=new Set();
-  const ts=Date.now();
+  const seen = new Set();
+  const ts   = Date.now();
+
   raw.forEach(ac=>{
     if(!ac.lat||!ac.lon||!ac.hex) return;
-    const hex=ac.hex.toUpperCase().trim();
+    const hex = ac.hex.toUpperCase().trim();
     if(seen.has(hex)) return;
     seen.add(hex);
-    // Filter garbage: alt -1000 means ground, speed 0 is fine
-    const alt=typeof ac.alt_baro==='number'&&ac.alt_baro>-500?ac.alt_baro:null;
-    const gs=typeof ac.gs==='number'&&ac.gs>=0?ac.gs:null;
-    const track=typeof ac.track==='number'?ac.track:null;
-    // Trail
+
+    const alt   = typeof ac.alt_baro==='number'&&ac.alt_baro>-500 ? ac.alt_baro : null;
+    const gs    = typeof ac.gs==='number'&&ac.gs>=0 ? ac.gs : null;
+    const track = typeof ac.track==='number' ? ac.track : null;
+    const type  = classify(hex, ac.flight);
+
+    // Trail — only push if moved
     if(!trails.has(hex)) trails.set(hex,[]);
-    const trail=trails.get(hex);
-    const last=trail[trail.length-1];
-    if(!last||Math.abs(last.lat-ac.lat)>.003||Math.abs(last.lon-ac.lon)>.003){
+    const trail = trails.get(hex);
+    const last  = trail[trail.length-1];
+    if(!last || Math.abs(last.lat-ac.lat)>.003 || Math.abs(last.lon-ac.lon)>.003){
       trail.push({lat:ac.lat,lon:ac.lon,alt,gs,ts});
       if(trail.length>MAX_TRAIL) trail.shift();
     }
+
+    // Only update aircraft map if data changed (reduces DOM work)
+    const existing = aircraft.get(hex);
     aircraft.set(hex,{
-      hex,ts,
+      hex, ts, type,
       flight:(ac.flight||'').trim(),
-      lat:ac.lat,lon:ac.lon,
-      alt,gs,track,
-      baro_rate:typeof ac.baro_rate==='number'?ac.baro_rate:null,
+      lat:ac.lat, lon:ac.lon, alt, gs, track,
+      vsi:typeof ac.baro_rate==='number'?ac.baro_rate:null,
       squawk:ac.squawk||null,
       reg:ac.r||null,
-      type:ac.t||null,
-      _type:classify(ac),
+      actype:ac.t||null,
     });
   });
-  // Remove stale (not seen in 2.5 refreshes)
-  const cutoff=ts-REFRESH_MS*2.5;
-  aircraft.forEach((_,k)=>{if(aircraft.get(k).ts<cutoff)aircraft.delete(k);});
+
+  // Remove stale aircraft
+  const cutoff = ts - REFRESH*2.5;
+  for(const [k,v] of aircraft){ if(v.ts<cutoff){ aircraft.delete(k); if(markers.has(k)){markers.get(k).remove();markers.delete(k);} } }
 }
 
-// ══════════════════════════════════════════════════════════
-// RENDER ALL
-// ══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
+// ARROW ICON — tiny, fast SVG
+// ═══════════════════════════════════════════════════
+function arrowIcon(type, heading, isSel){
+  const c = COLORS[type];
+  const sz = isSel ? 20 : (type==='blocked'?16:12);
+  const glow = type==='blocked' ? 'drop-shadow(0 0 4px '+c+')' : isSel ? 'drop-shadow(0 0 4px '+c+')' : 'none';
+  return L.divIcon({
+    html:'<svg xmlns="http://www.w3.org/2000/svg" width="'+sz+'" height="'+sz+'" viewBox="0 0 20 20" style="transform:rotate('+((heading||0))+'deg);filter:'+glow+';display:block"><polygon points="10,1 17,18 10,13 3,18" fill="'+c+'"/></svg>',
+    iconSize:[sz,sz], iconAnchor:[sz/2,sz/2], className:''
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER — diff-based marker updates
+// ═══════════════════════════════════════════════════
 function renderAll(){
-  heatMode?renderHeatmap():renderMarkers();
-  renderList();
-  updatePills();
+  heatMode ? renderHeatmap() : renderMarkers();
+  updateStats();
+  renderNotable();
+  if(selected) refreshDetailPanel();
 }
 
 function getFiltered(){
-  const all=[...aircraft.values()];
-  if(filter==='blocked') return all.filter(a=>a._type==='blocked');
-  if(filter==='military') return all.filter(a=>a._type==='military');
-  if(filter==='private') return all.filter(a=>a._type==='private');
-  return all;
-}
-
-// ══════════════════════════════════════════════════════════
-// MARKERS
-// ══════════════════════════════════════════════════════════
-function makeArrow(type,heading,isSel){
-  const c=COLORS[type];
-  const sz=isSel?20:13;
-  const glow=type==='blocked'?'drop-shadow(0 0 5px '+c+')':isSel?'drop-shadow(0 0 4px '+c+')':'none';
-  const svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+sz+'" height="'+sz+'" viewBox="0 0 20 20"'+
-    ' style="transform:rotate('+((heading||0))+'deg);filter:'+glow+';display:block">'+
-    '<polygon points="10,1 17,18 10,13 3,18" fill="'+c+'"/></svg>';
-  return L.divIcon({html:svg,iconSize:[sz,sz],iconAnchor:[sz/2,sz/2],className:''});
+  if(filter==='all') return [...aircraft.values()];
+  return [...aircraft.values()].filter(a=>a.type===filter);
 }
 
 function renderMarkers(){
-  // Clear
-  markers.forEach(m=>m.remove());markers.clear();
-  trailLines.forEach(l=>map.removeLayer(l));trailLines.clear();
-  if(heatLayer){map.removeLayer(heatLayer);heatLayer=null;}
-  clusterGroup.clearLayers();
-  if(heatMode) return;
+  if(heatLayer){ map.removeLayer(heatLayer); heatLayer=null; }
+  const items = getFiltered();
+  const hexSet = new Set(items.map(a=>a.hex));
 
-  const items=getFiltered();
-  const layer=useCluster?clusterGroup:map;
+  // Remove markers for aircraft no longer in filter
+  for(const [hex,m] of markers){
+    if(!hexSet.has(hex)){ m.remove(); markers.delete(hex); }
+  }
 
+  // Update or create markers
   items.forEach(ac=>{
-    const isSel=ac.hex===selected;
-    // Trail
-    if(showTrails){
-      const trail=trails.get(ac.hex)||[];
-      if(trail.length>1){
-        const line=L.polyline(trail.map(p=>[p.lat,p.lon]),{
-          color:COLORS[ac._type],
-          weight:isSel?2.5:1.5,
-          opacity:isSel?.85:ac._type==='blocked'?.5:.18,
-        });
-        if(useCluster) line.addTo(map); else line.addTo(map);
-        trailLines.set(ac.hex,line);
-      }
+    const isSel = ac.hex===selected;
+    if(markers.has(ac.hex)){
+      // Diff update: just move existing marker (fast)
+      markers.get(ac.hex).setLatLng([ac.lat,ac.lon]).setIcon(arrowIcon(ac.type,ac.track,isSel));
+    } else {
+      // New aircraft: create marker
+      const m = L.marker([ac.lat,ac.lon],{
+        icon: arrowIcon(ac.type,ac.track,isSel),
+        zIndexOffset: ac.type==='blocked'?1000:isSel?500:0,
+      });
+      const cs = ac.flight||ac.hex;
+      const altStr = ac.alt!=null&&ac.alt>-500 ? Math.round(ac.alt/100)*100+' ft' : 'GND';
+      m.bindTooltip('<b>'+cs+'</b>  '+ac.type.toUpperCase()+'<br>'+altStr+(ac.gs?' · '+Math.round(ac.gs)+' kt':''),
+        {className:'leaflet-tooltip',direction:'top',offset:[0,-4]});
+      m.on('click',()=>selectAc(ac.hex));
+      m.addTo(map);
+      markers.set(ac.hex,m);
     }
-    const cs=(ac.flight||ac.hex||'???');
-    const altStr=ac.alt>0?Math.round(ac.alt/100)*100+' ft':'GND';
-    const spdStr=ac.gs!=null?Math.round(ac.gs)+' kt':'—';
-    const m=L.marker([ac.lat,ac.lon],{
-      icon:makeArrow(ac._type,ac.track,isSel),
-      zIndexOffset:ac._type==='blocked'?1000:isSel?500:0,
-    });
-    m.bindTooltip('<b>'+cs+'</b> · '+ac._type.toUpperCase()+'<br>'+altStr+(spdStr!=='—'?' · '+spdStr:''),{className:'leaflet-tooltip',direction:'top',offset:[0,-4]});
-    m.on('click',()=>selectAc(ac.hex));
-    if(useCluster) clusterGroup.addLayer(m); else m.addTo(map);
-    markers.set(ac.hex,m);
+  });
+
+  // Trails
+  if(showTrails) renderTrails(items);
+  else trailLayerGroup.clearLayers();
+}
+
+function renderTrails(items){
+  trailLayerGroup.clearLayers();
+  items.forEach(ac=>{
+    const trail = trails.get(ac.hex)||[];
+    if(trail.length<2) return;
+    const isSel = ac.hex===selected;
+    L.polyline(trail.map(p=>[p.lat,p.lon]),{
+      color: COLORS[ac.type],
+      weight: isSel?2.5:1.5,
+      opacity: isSel?.85 : ac.type==='blocked'?.5 : .15,
+    }).addTo(trailLayerGroup);
   });
 }
 
 function renderHeatmap(){
-  markers.forEach(m=>m.remove());markers.clear();
-  trailLines.forEach(l=>map.removeLayer(l));trailLines.clear();
-  clusterGroup.clearLayers();
+  trailLayerGroup.clearLayers();
+  for(const [,m] of markers){ m.remove(); } markers.clear();
   if(heatLayer) map.removeLayer(heatLayer);
-  const pts=getFiltered().map(ac=>[ac.lat,ac.lon,ac._type==='blocked'?1:ac._type==='military'?.8:.4]);
-  heatLayer=L.heatLayer(pts,{radius:28,blur:18,maxZoom:9,gradient:{'.2':'#3b82f6','.5':'#f59e0b','.8':'#ef4444','1':'#fff'}}).addTo(map);
+  const pts = getFiltered().map(ac=>[ac.lat,ac.lon,ac.type==='blocked'?1:ac.type==='military'?.8:.4]);
+  heatLayer = L.heatLayer(pts,{radius:28,blur:18,maxZoom:9,
+    gradient:{'.2':'#3b82f6','.5':'#f59e0b','.8':'#ef4444','1':'#fff'}}).addTo(map);
 }
 
-// ══════════════════════════════════════════════════════════
-// LIST
-// ══════════════════════════════════════════════════════════
-function renderList(){
-  const el=document.getElementById('aircraft-list');
-  const sortBy=document.getElementById('sort-select').value;
-  let items=[...getFiltered()];
+// ═══════════════════════════════════════════════════
+// STATS + NOTABLE
+// ═══════════════════════════════════════════════════
+function updateStats(){
+  const all  = [...aircraft.values()];
+  const blk  = all.filter(a=>a.type==='blocked').length;
+  const mil  = all.filter(a=>a.type==='military').length;
+  const prv  = all.filter(a=>a.type==='private').length;
+  document.getElementById('s-total').textContent   = all.length.toLocaleString();
+  document.getElementById('s-blocked').textContent = blk;
+  document.getElementById('s-mil').textContent     = mil;
+  document.getElementById('s-priv').textContent    = prv;
+  document.getElementById('p-total').textContent   = all.length.toLocaleString();
+  document.getElementById('p-blocked').textContent = blk;
+}
 
-  // Sort
-  items.sort((a,b)=>{
-    if(sortBy==='alt') return (b.alt||0)-(a.alt||0);
-    if(sortBy==='speed') return (b.gs||0)-(a.gs||0);
-    if(sortBy==='callsign') return (a.flight||a.hex).localeCompare(b.flight||b.hex);
-    // default: type priority
-    const o={blocked:0,military:1,private:2,commercial:3};
-    if(o[a._type]!==o[b._type]) return o[a._type]-o[b._type];
-    return (b.alt||0)-(a.alt||0);
-  });
+function renderNotable(){
+  const el = document.getElementById('notable-list');
+  // Priority: blocked first, then military, then high-altitude private
+  const notable = [...aircraft.values()]
+    .filter(a=>a.type==='blocked'||a.type==='military'||(a.type==='private'&&a.alt>30000))
+    .sort((a,b)=>{
+      const o={blocked:0,military:1,private:2,commercial:3};
+      return o[a.type]-o[b.type]||(b.alt||0)-(a.alt||0);
+    })
+    .slice(0,12);
 
-  if(!items.length){
-    el.innerHTML='<div class="empty-state"><div>📡</div><div>No aircraft</div></div>';
+  if(!notable.length){
+    el.innerHTML='<div style="font-size:11px;color:var(--muted);padding:4px 0">No notable aircraft currently tracked</div>';
     return;
   }
-
-  const altC=a=>a.alt>30000?'var(--green)':a.alt>10000?'var(--yellow)':'var(--red)';
-  const badge=a=>a._type==='blocked'?'<span class="badge badge-blk">BLOCKED</span>':
-                   a._type==='military'?'<span class="badge badge-mil">MIL</span>':'';
-  const emerBadge=a=>a.squawk==='7500'?'<span class="badge badge-emer">HIJACK</span>':
-                      a.squawk==='7600'?'<span class="badge badge-emer">RADIO FAIL</span>':
-                      a.squawk==='7700'?'<span class="badge badge-emer">EMERGENCY</span>':'';
-
-  el.innerHTML=items.map(ac=>{
-    const cs=ac.flight||ac.hex||'???';
-    const isSel=ac.hex===selected;
-    const altStr=ac.alt!=null&&ac.alt>-500?Math.round(ac.alt/100)*100+' ft':'—';
-    const spdStr=ac.gs!=null?Math.round(ac.gs)+' kt':'—';
-    const hdgStr=ac.track!=null?Math.round(ac.track)+'°':'—';
-    return `<div class="ac-card ${ac._type} ${isSel?'sel':''}" onclick="selectAc('${ac.hex}')">
-      <div class="card-top">
-        <div class="ac-cs">${cs}${badge(ac)}${emerBadge(ac)}</div>
-        <div class="ac-hex">${ac.hex}${ac.reg?' · '+ac.reg:''}</div>
+  el.innerHTML = notable.map(ac=>{
+    const cs   = ac.flight||ac.hex;
+    const altStr = ac.alt!=null&&ac.alt>-500 ? Math.round(ac.alt/100)*100+' ft':'GND';
+    const c    = COLORS[ac.type];
+    const emBadge = ac.squawk==='7700'?' 🆘':ac.squawk==='7500'?' 🚨':ac.squawk==='7600'?' 📡':'';
+    return `<div class="recent-row" onclick="selectAc('${ac.hex}')">
+      <div class="recent-dot" style="background:${c}"></div>
+      <div class="recent-info">
+        <div class="recent-cs">${cs}${emBadge}</div>
+        <div class="recent-sub">${ac.hex}${ac.reg?' · '+ac.reg:''} · ${ac.type.toUpperCase()}</div>
       </div>
-      <div class="card-stats">
-        <div class="sbox"><div class="slbl">Alt</div><div class="sval" style="color:${altC(ac)}">${altStr}</div></div>
-        <div class="sbox"><div class="slbl">Speed</div><div class="sval">${spdStr}</div></div>
-        <div class="sbox"><div class="slbl">Heading</div><div class="sval">${hdgStr}</div></div>
-      </div>
-      <div class="verify-row">
-        <a class="vlink" href="https://globe.adsbexchange.com/?icao=${ac.hex.toLowerCase()}" target="_blank">ADS-B Exchange ↗</a>
-        <a class="vlink" href="https://flightaware.com/live/flight/${ac.flight||ac.hex}" target="_blank">FlightAware ↗</a>
-      </div>
+      <div class="recent-alt" style="color:${c}">${altStr}</div>
     </div>`;
   }).join('');
 }
 
-function updatePills(){
-  const all=[...aircraft.values()];
-  const blk=all.filter(a=>a._type==='blocked').length;
-  const mil=all.filter(a=>a._type==='military').length;
-  const prv=all.filter(a=>a._type==='private').length;
-  document.getElementById('pill-total').textContent=all.length.toLocaleString();
-  document.getElementById('pill-blocked').textContent=blk;
-  document.getElementById('cnt-all').textContent='('+all.length+')';
-  document.getElementById('cnt-blocked').textContent='('+blk+')';
-  document.getElementById('cnt-mil').textContent='('+mil+')';
-  document.getElementById('cnt-priv').textContent='('+prv+')';
+// ═══════════════════════════════════════════════════
+// SELECT AIRCRAFT — show detail panel
+// ═══════════════════════════════════════════════════
+function selectAc(hex){
+  selected = hex;
+  const ac = aircraft.get(hex);
+
+  // Show detail view, hide stats view
+  document.getElementById('stats-view').style.display='none';
+  document.getElementById('detail-view').classList.add('on');
+
+  if(ac){
+    map.flyTo([ac.lat,ac.lon],Math.max(map.getZoom(),8),{duration:.7});
+  }
+  fillDetailPanel(hex, ac);
+  renderMarkers(); // re-render to highlight selected
 }
 
-// ══════════════════════════════════════════════════════════
-// SELECT
-// ══════════════════════════════════════════════════════════
-function selectAc(hex){
-  const ac=aircraft.get(hex);
-  if(!ac) return;
-  selected=hex;
-  map.flyTo([ac.lat,ac.lon],Math.max(map.getZoom(),8),{duration:.8});
+function fillDetailPanel(hex, ac){
+  const cs = ac ? (ac.flight||hex) : hex;
+  const type = ac ? ac.type : 'unknown';
+  const color = COLORS[type]||'var(--text)';
 
-  const cs=ac.flight||ac.hex;
-  const color=COLORS[ac._type];
-  document.getElementById('d-call').textContent=cs;
-  document.getElementById('d-call').style.color=ac._type==='blocked'?'var(--red)':ac._type==='military'?'var(--yellow)':'var(--text)';
+  document.getElementById('dv-call').textContent = cs;
+  document.getElementById('dv-call').style.color = type==='blocked'?'var(--red)':type==='military'?'var(--yellow)':'var(--text)';
 
-  const tags=[];
-  tags.push('<span class="dtag" style="color:'+color+';border-color:'+color+'40;background:'+color+'15">'+ac._type.toUpperCase()+'</span>');
-  if(ac.squawk) tags.push('<span class="dtag" style="color:var(--muted);border-color:var(--border)">Squawk '+ac.squawk+(ac.squawk==='7500'?' 🚨':ac.squawk==='7600'?' 📡':ac.squawk==='7700'?' 🆘':'')+'</span>');
-  if(ac.reg) tags.push('<span class="dtag" style="color:var(--muted);border-color:var(--border)">'+ac.reg+'</span>');
-  if(ac.type) tags.push('<span class="dtag" style="color:var(--muted);border-color:var(--border)">'+ac.type+'</span>');
-  document.getElementById('d-tags').innerHTML=tags.join('');
+  // Tags
+  const tags = [];
+  if(ac){
+    tags.push('<span class="dtag" style="color:'+color+';border-color:'+color+'40;background:'+color+'15">'+type.toUpperCase()+'</span>');
+    if(ac.squawk) tags.push('<span class="dtag '+(ac.squawk==='7700'||ac.squawk==='7500'||ac.squawk==='7600'?'tag-emer':'')+'" style="color:var(--muted);border-color:var(--border)">Squawk '+ac.squawk+(ac.squawk==='7700'?' 🆘':ac.squawk==='7500'?' 🚨':ac.squawk==='7600'?' 📡':'')+'</span>');
+    if(ac.reg) tags.push('<span class="dtag" style="color:var(--muted);border-color:var(--border)">'+ac.reg+'</span>');
+    if(ac.actype) tags.push('<span class="dtag" style="color:var(--muted);border-color:var(--border)">'+ac.actype+'</span>');
+  } else {
+    tags.push('<span class="dtag" style="color:var(--yellow);border-color:#f59e0b40;background:#f59e0b15">NOT CURRENTLY AIRBORNE</span>');
+  }
+  document.getElementById('dv-tags').innerHTML = tags.join('');
 
-  document.getElementById('d-alt').textContent=ac.alt!=null&&ac.alt>-500?Math.round(ac.alt).toLocaleString()+' ft':'GND';
-  document.getElementById('d-spd').textContent=ac.gs!=null?Math.round(ac.gs)+' kt':'—';
-  document.getElementById('d-hdg').textContent=ac.track!=null?Math.round(ac.track)+'°':'—';
-  document.getElementById('d-vsi').textContent=ac.baro_rate?(ac.baro_rate>0?'+':'')+Math.round(ac.baro_rate)+' fpm':'—';
-  document.getElementById('d-sqk').textContent=ac.squawk||'—';
-  document.getElementById('d-hex').textContent=ac.hex;
-  document.getElementById('d-lat').textContent=ac.lat.toFixed(5);
-  document.getElementById('d-lon').textContent=ac.lon.toFixed(5);
+  // Live stats
+  document.getElementById('dv-alt').textContent = ac&&ac.alt!=null&&ac.alt>-500?Math.round(ac.alt).toLocaleString()+' ft':'—';
+  document.getElementById('dv-spd').textContent = ac&&ac.gs!=null?Math.round(ac.gs)+' kt':'—';
+  document.getElementById('dv-hdg').textContent = ac&&ac.track!=null?Math.round(ac.track)+'°':'—';
+  document.getElementById('dv-vsi').textContent = ac&&ac.vsi?(ac.vsi>0?'+':'')+Math.round(ac.vsi)+' fpm':'—';
+  document.getElementById('dv-sqk').textContent = ac&&ac.squawk||'—';
+  document.getElementById('dv-hex').textContent = hex;
+  document.getElementById('dv-lat').textContent = ac?ac.lat.toFixed(5):'—';
+  document.getElementById('dv-lon').textContent = ac?ac.lon.toFixed(5):'—';
 
-  const trail=(trails.get(hex)||[]).slice().reverse();
-  document.getElementById('d-hist-count').textContent=trail.length+' point'+(trail.length!==1?'s':'');
-  document.getElementById('d-hist').innerHTML=trail.length
-    ?trail.map(p=>'<div class="hist-row"><span>'+new Date(p.ts).toLocaleTimeString()+'</span><span>'+p.lat.toFixed(4)+', '+p.lon.toFixed(4)+'</span><span>'+(p.alt!=null&&p.alt>-500?Math.round(p.alt)+' ft':'GND')+'</span><span>'+(p.gs!=null?Math.round(p.gs)+' kt':'—')+'</span></div>').join('')
-    :'<div style="padding:8px;font-size:11px;color:var(--muted);text-align:center">No history yet</div>';
+  // Trail history
+  const trail = (trails.get(hex)||[]).slice().reverse();
+  document.getElementById('trail-title').textContent = 'Session Trail — '+trail.length+' position'+(trail.length!==1?'s':'');
+  const tbody = document.getElementById('trail-body');
+  tbody.innerHTML = trail.length
+    ? trail.map(p=>'<tr><td>'+new Date(p.ts).toLocaleTimeString()+'</td><td>'+p.lat.toFixed(4)+'</td><td>'+p.lon.toFixed(4)+'</td><td>'+(p.alt!=null&&p.alt>-500?Math.round(p.alt)+' ft':'GND')+'</td><td>'+(p.gs!=null?Math.round(p.gs)+' kt':'—')+'</td></tr>').join('')
+    : '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:10px">Positions accumulate as aircraft moves during your session</td></tr>';
 
-  document.getElementById('d-link-adsb').href='https://globe.adsbexchange.com/?icao='+hex.toLowerCase();
-  document.getElementById('d-link-fa').href='https://flightaware.com/live/flight/'+cs;
-  document.getElementById('d-link-fr').href='https://www.flightradar24.com/'+cs;
+  // External links
+  document.getElementById('link-adsb').href = 'https://globe.adsbexchange.com/?icao='+hex.toLowerCase();
+  document.getElementById('link-fa').href   = 'https://flightaware.com/live/flight/'+cs;
+  document.getElementById('link-fr').href   = 'https://www.flightradar24.com/'+cs;
+  document.getElementById('link-pw').href   = 'https://planefinder.net/flight/'+cs;
+}
 
-  document.getElementById('detail').classList.add('on');
-  renderMarkers();
-  renderList();
+function refreshDetailPanel(){
+  const ac = aircraft.get(selected);
+  fillDetailPanel(selected, ac);
 }
 
 function closeDetail(){
-  selected=null;
-  document.getElementById('detail').classList.remove('on');
-  renderMarkers();renderList();
+  selected = null;
+  document.getElementById('stats-view').style.display='';
+  document.getElementById('detail-view').classList.remove('on');
+  renderMarkers();
 }
 
-// ══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
 // SEARCH
-// ══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
 function doSearch(){
-  const q=document.getElementById('search-input').value.trim().toUpperCase();
+  const q = document.getElementById('q').value.trim().toUpperCase();
   if(!q) return;
-  let exact=null,partial=null;
+  let exact=null, partial=null;
   for(const [,ac] of aircraft){
-    const cs=(ac.flight||'').toUpperCase();
-    const hex=(ac.hex||'').toUpperCase();
-    const reg=(ac.reg||'').toUpperCase();
+    const cs  = (ac.flight||'').toUpperCase();
+    const hex = (ac.hex||'').toUpperCase();
+    const reg = (ac.reg||'').toUpperCase();
     if(cs===q||hex===q||reg===q){exact=ac;break;}
     if(!partial&&(cs.includes(q)||hex.includes(q)||reg.includes(q))) partial=ac;
   }
-  const match=exact||partial;
+  const match = exact||partial;
   if(match){
     selectAc(match.hex);
-    toast('✈ '+( match.flight||match.hex)+' · '+match._type.toUpperCase(),match._type==='blocked'?'err':match._type==='military'?'info':'ok');
+    toast('✈ '+(match.flight||match.hex)+' · '+match.type.toUpperCase(), match.type==='blocked'?'err':'ok');
   } else {
-    // Show offline panel
-    document.getElementById('detail').classList.add('on');
-    document.getElementById('d-call').textContent=q;
-    document.getElementById('d-call').style.color='var(--yellow)';
-    document.getElementById('d-tags').innerHTML='<span class="dtag" style="color:var(--yellow);border-color:#f59e0b40;background:#f59e0b15">NOT CURRENTLY AIRBORNE</span>';
-    ['d-alt','d-spd','d-hdg','d-vsi','d-sqk','d-hex','d-lat','d-lon'].forEach(id=>document.getElementById(id).textContent='—');
-    document.getElementById('d-hist-count').textContent='0 points';
-    document.getElementById('d-hist').innerHTML='<div style="padding:8px;font-size:11px;color:var(--muted);text-align:center">Not currently tracked — check history below</div>';
-    document.getElementById('d-link-adsb').href='https://globe.adsbexchange.com/?find='+encodeURIComponent(q);
-    document.getElementById('d-link-adsb').textContent='Search history on ADS-B Exchange ↗';
-    document.getElementById('d-link-fa').href='https://flightaware.com/live/flight/'+q;
-    document.getElementById('d-link-fr').href='https://www.flightradar24.com/'+q;
-    toast('"'+q+'" not live — see history links','info');
+    // Offline — show history panel for this callsign
+    selected = q;
+    document.getElementById('stats-view').style.display='none';
+    document.getElementById('detail-view').classList.add('on');
+    fillDetailPanel(q, null);
+    toast('"'+q+'" not currently airborne — history links below','info');
   }
 }
-document.getElementById('search-input').addEventListener('keydown',e=>e.key==='Enter'&&doSearch());
+document.getElementById('q').addEventListener('keydown',e=>e.key==='Enter'&&doSearch());
 
-// ══════════════════════════════════════════════════════════
-// CONTROLS
-// ══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
+// MAP CONTROLS
+// ═══════════════════════════════════════════════════
 function setFilter(f,btn){
   filter=f;
   document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('on'));
   btn.classList.add('on');
-  closeDetail();
   renderAll();
 }
-function refreshNow(){fetchData();toast('🔄 Refreshing…','info');}
+function resetView(){ map.flyTo([39.5,-98.5],5,{duration:1}); }
+function toggleSat(){
+  useSat=!useSat;
+  if(useSat){map.removeLayer(TILES.dark);TILES.sat.addTo(map);document.getElementById('btn-sat').textContent='🌙 Dark';}
+  else{map.removeLayer(TILES.sat);TILES.dark.addTo(map);document.getElementById('btn-sat').textContent='🛰 Satellite';}
+}
+function toggleTrails(){
+  showTrails=!showTrails;
+  const b=document.getElementById('btn-trails');
+  b.classList.toggle('on',showTrails);
+  b.textContent='〰 Trails'+(showTrails?'':' OFF');
+  showTrails ? renderTrails(getFiltered()) : trailLayerGroup.clearLayers();
+}
+function toggleHeat(){
+  heatMode=!heatMode;
+  document.getElementById('btn-heat').classList.toggle('on',heatMode);
+  renderAll();
+}
+function refreshNow(){ fetchData(); toast('🔄 Refreshing…','info'); }
 
+// ═══════════════════════════════════════════════════
+// DEAD RECKONING — butter-smooth movement
+// ═══════════════════════════════════════════════════
+function toRad(d){return d*Math.PI/180;}
+function deadReckon(lat,lon,hdg,kts,ms){
+  const d=(kts*1.852)*(ms/3600000)/6371;
+  const b=toRad(hdg);const r1=toRad(lat);const o1=toRad(lon);
+  const r2=Math.asin(Math.sin(r1)*Math.cos(d)+Math.cos(r1)*Math.sin(d)*Math.cos(b));
+  const o2=o1+Math.atan2(Math.sin(b)*Math.sin(d)*Math.cos(r1),Math.cos(d)-Math.sin(r1)*Math.sin(r2));
+  return{lat:r2*180/Math.PI,lon:o2*180/Math.PI};
+}
+
+function animate(){
+  if(!heatMode){
+    const el=Date.now()-lastFetch;
+    if(el>500){
+      for(const [hex,ac] of aircraft){
+        if(!ac.track||!ac.gs||ac.gs<30) continue;
+        const m=markers.get(hex);if(!m) continue;
+        const p=deadReckon(ac.lat,ac.lon,ac.track,ac.gs,el);
+        m.setLatLng([p.lat,p.lon]);
+      }
+    }
+  }
+  requestAnimationFrame(animate);
+}
+
+// ═══════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════
 function setStatus(txt,loading){
-  const b=document.getElementById('status-badge');
-  b.innerHTML=loading
-    ?'<span class="spinner-sm"></span><span style="color:var(--muted)">'+txt+'</span>'
+  const p=document.getElementById('status-pill');
+  p.innerHTML=loading
+    ?'<span class="spin"></span><span style="color:var(--muted)">'+txt+'</span>'
     :'<span style="color:var(--green)">●</span><span>'+txt+'</span>';
 }
 function hideOverlay(){
@@ -764,36 +792,11 @@ function toast(msg,type='info'){
   clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3500);
 }
 
-// ══════════════════════════════════════════════════════════
-// DEAD RECKONING — smooth movement between API calls
-// ══════════════════════════════════════════════════════════
-function toRad(d){return d*Math.PI/180;}
-function deadReckon(lat,lon,hdg,kts,ms){
-  const dist=(kts*1.852)*(ms/3600000)/6371;
-  const b=toRad(hdg);const r1=toRad(lat);const o1=toRad(lon);
-  const r2=Math.asin(Math.sin(r1)*Math.cos(dist)+Math.cos(r1)*Math.sin(dist)*Math.cos(b));
-  const o2=o1+Math.atan2(Math.sin(b)*Math.sin(dist)*Math.cos(r1),Math.cos(dist)-Math.sin(r1)*Math.sin(r2));
-  return{lat:r2*180/Math.PI,lon:o2*180/Math.PI};
-}
-
-function animate(){
-  const el=Date.now()-lastFetchTime;
-  if(el>500&&!heatMode){
-    aircraft.forEach((ac,hex)=>{
-      if(!ac.lat||!ac.lon||!ac.track||!ac.gs||ac.gs<30) return;
-      const m=markers.get(hex);if(!m) return;
-      const p=deadReckon(ac.lat,ac.lon,ac.track,ac.gs,el);
-      m.setLatLng([p.lat,p.lon]);
-    });
-  }
-  requestAnimationFrame(animate);
-}
-
-// ══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
 // INIT
-// ══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
 fetchData();
-setInterval(fetchData,REFRESH_MS);
+setInterval(fetchData, REFRESH);
 animate();
 </script>
 </body>
