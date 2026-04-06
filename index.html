@@ -236,10 +236,12 @@ nav{height:52px;background:rgba(8,13,24,.98);border-bottom:1px solid var(--borde
 
 <script>
 // ════════════════════════════════════════════════════
-// CONFIG — replace YOUR_ADSB_KEY with your real key
+// CONFIG
 // ════════════════════════════════════════════════════
+const API_BASE  = 'https://blockedtails-api.mitpatel020.workers.dev';
 const ADSB_KEY  = '0b616e6bb7msh7bca2a9c0b72d5ap18774bjsna04e271b0aca';
 const ADSB_HOST = 'adsbexchange-com1.p.rapidapi.com';
+
 
 // Known blocked tails — add more as discovered
 const BLOCKED_TAILS = new Set([
@@ -345,9 +347,7 @@ function makeArrow(type, heading, isSelected){
 async function fetchData(){
   setStatus('Fetching...', true);
   try{
-    const r = await fetch(`https://${ADSB_HOST}/v2/lat/39.5/lon/-98.5/dist/500/`, {
-      headers: {'x-rapidapi-key': ADSB_KEY, 'x-rapidapi-host': ADSB_HOST}
-    });
+    const r = await fetch(API_BASE + '/v2/lat/39.5/lon/-98.5/dist/500/');
     if(!r.ok) throw new Error(r.status);
     const d = await r.json();
     isDemo = false;
@@ -675,4 +675,5 @@ setInterval(fetchData, REFRESH_MS);
 </script>
 </body>
 </html>
+
 
