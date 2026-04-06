@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BlockedTails — Live Flight Intelligence</title>
+<title>BlockedTails - Live Flight Intelligence</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
@@ -180,7 +180,7 @@ nav{height:52px;background:rgba(8,13,24,.98);border-bottom:1px solid var(--borde
 
     <div class="map-top-left">
       <div class="status-badge" id="statusBadge"><span id="statusText">Connecting...</span></div>
-      <div class="demo-banner" id="demoBanner" style="display:none">⚠ Demo mode — add API key for real data</div>
+      <div class="demo-banner" id="demoBanner" style="display:none">⚠ Demo mode - add API key for real data</div>
     </div>
 
     <div class="map-top-right">
@@ -203,23 +203,23 @@ nav{height:52px;background:rgba(8,13,24,.98);border-bottom:1px solid var(--borde
     <div class="detail" id="detail">
       <div class="d-head">
         <div>
-          <div class="d-call" id="dCall">—</div>
-          <div class="d-sub" id="dSub">—</div>
+          <div class="d-call" id="dCall">-</div>
+          <div class="d-sub" id="dSub">-</div>
         </div>
         <div class="d-close" onclick="closeDetail()">✕</div>
       </div>
       <div class="d-note" id="dNote"></div>
       <div class="d-grid">
-        <div class="dstat"><div class="dstat-l">Altitude</div><div class="dstat-v" id="dAlt">—</div></div>
-        <div class="dstat"><div class="dstat-l">Speed</div><div class="dstat-v" id="dSpd">—</div></div>
-        <div class="dstat"><div class="dstat-l">Heading</div><div class="dstat-v" id="dHdg">—</div></div>
-        <div class="dstat"><div class="dstat-l">Vert Rate</div><div class="dstat-v" id="dVsi">—</div></div>
-        <div class="dstat"><div class="dstat-l">Squawk</div><div class="dstat-v" id="dSqk">—</div></div>
+        <div class="dstat"><div class="dstat-l">Altitude</div><div class="dstat-v" id="dAlt">-</div></div>
+        <div class="dstat"><div class="dstat-l">Speed</div><div class="dstat-v" id="dSpd">-</div></div>
+        <div class="dstat"><div class="dstat-l">Heading</div><div class="dstat-v" id="dHdg">-</div></div>
+        <div class="dstat"><div class="dstat-l">Vert Rate</div><div class="dstat-v" id="dVsi">-</div></div>
+        <div class="dstat"><div class="dstat-l">Squawk</div><div class="dstat-v" id="dSqk">-</div></div>
       </div>
       <div class="d-grid3">
-        <div class="dstat"><div class="dstat-l">ICAO Hex</div><div class="dstat-v" style="font-size:12px;font-family:monospace" id="dIcao">—</div></div>
-        <div class="dstat"><div class="dstat-l">Latitude</div><div class="dstat-v" style="font-size:12px" id="dLat">—</div></div>
-        <div class="dstat"><div class="dstat-l">Longitude</div><div class="dstat-v" style="font-size:12px" id="dLon">—</div></div>
+        <div class="dstat"><div class="dstat-l">ICAO Hex</div><div class="dstat-v" style="font-size:12px;font-family:monospace" id="dIcao">-</div></div>
+        <div class="dstat"><div class="dstat-l">Latitude</div><div class="dstat-v" style="font-size:12px" id="dLat">-</div></div>
+        <div class="dstat"><div class="dstat-l">Longitude</div><div class="dstat-v" style="font-size:12px" id="dLon">-</div></div>
       </div>
       <div class="trail-info" id="trailInfo">〰 Trail data accumulates every 30s refresh</div>
       <div class="d-source">Source: ADS-B Exchange · <a id="dVerify" href="#" target="_blank">Verify on globe.adsbexchange.com ↗</a></div>
@@ -243,7 +243,7 @@ const ADSB_KEY  = '0b616e6bb7msh7bca2a9c0b72d5ap18774bjsna04e271b0aca';
 const ADSB_HOST = 'adsbexchange-com1.p.rapidapi.com';
 
 
-// Known blocked tails — add more as discovered
+// Known blocked tails - add more as discovered
 const BLOCKED_TAILS = new Set([
   'N280PH','N900SK','N1SP','N2SP','N3SP',
   'N4SP','N5SP','N8PH','N168PH','N170PH',
@@ -300,7 +300,7 @@ let viewMode  = 'map';
 let isDemo    = false;
 
 // ════════════════════════════════════════════════════
-// CLASSIFY — deterministic, based on fixed ICAO + callsign
+// CLASSIFY - deterministic, based on fixed ICAO + callsign
 // ════════════════════════════════════════════════════
 function classify(ac){
   const cs    = (ac.flight || '').trim().toUpperCase();
@@ -310,7 +310,7 @@ function classify(ac){
   if(BLOCKED_TAILS.has(cs) || BLOCKED_TAILS.has(icao)) return 'blocked';
   if(MIL_PREFIXES.some(p => cs.startsWith(p)))         return 'military';
   if(MIL_ICAO_RANGES.some(([lo,hi]) => icaoN>=lo && icaoN<=hi)) return 'military';
-  // N-number (US registered private/charter — starts N then digit)
+  // N-number (US registered private/charter - starts N then digit)
   if(/^N[0-9]/.test(cs) && cs.length <= 7)            return 'private';
   return 'commercial';
 }
@@ -318,7 +318,7 @@ function classify(ac){
 const COLORS = {blocked:'#ef4444', military:'#f59e0b', private:'#a855f7', commercial:'#3b82f6'};
 
 // ════════════════════════════════════════════════════
-// ARROW ICON — simple triangle, rotates with heading
+// ARROW ICON - simple triangle, rotates with heading
 // Stays consistent: same ICAO = same color always
 // ════════════════════════════════════════════════════
 function makeArrow(type, heading, isSelected){
@@ -327,7 +327,7 @@ function makeArrow(type, heading, isSelected){
   const size = isSelected ? 20 : 14;
   const glow = isSelected ? `drop-shadow(0 0 6px ${color})` : type === 'blocked' ? `drop-shadow(0 0 4px ${color})` : 'none';
 
-  // Pure triangle arrow — nothing random, nothing fancy
+  // Pure triangle arrow - nothing random, nothing fancy
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 20 20"
     style="transform:rotate(${h}deg);filter:${glow};display:block">
     <polygon points="10,1 16,17 10,13 4,17" fill="${color}" stroke="${color === '#ef4444' ? '#fff' : 'none'}" stroke-width="${type==='blocked'?'.5':'0'}"/>
@@ -367,7 +367,7 @@ async function fetchData(){
       isDemo = true;
       document.getElementById('demoBanner').style.display = 'flex';
       loadStaticDemo();
-      setStatus('Demo mode — API key needed for live data', false);
+      setStatus('Demo mode - API key needed for live data', false);
     } else {
       setStatus(`Refresh failed · showing last data · ${new Date().toLocaleTimeString()}`, false);
     }
@@ -376,7 +376,7 @@ async function fetchData(){
   hideOverlay();
 }
 
-// Ingest real data — deduplicate strictly by ICAO hex
+// Ingest real data - deduplicate strictly by ICAO hex
 function ingestAircraft(raw){
   const seen = new Set();
   raw.forEach(ac => {
@@ -387,7 +387,7 @@ function ingestAircraft(raw){
     if(seen.has(icao)) return;
     seen.add(icao);
 
-    // Update trail — only append if position actually changed
+    // Update trail - only append if position actually changed
     if(!trails.has(icao)) trails.set(icao, []);
     const trail = trails.get(icao);
     const last = trail[trail.length - 1];
@@ -408,7 +408,7 @@ function ingestAircraft(raw){
   });
 }
 
-// Static demo — fixed positions, clearly marked, no randomness
+// Static demo - fixed positions, clearly marked, no randomness
 function loadStaticDemo(){
   const DEMO = [
     // Real-world example positions (approximate public info)
@@ -471,7 +471,7 @@ function renderMarkers(){
       }
     }
 
-    // Marker — arrow icon
+    // Marker - arrow icon
     const m = L.marker([ac.lat, ac.lon], {
       icon: makeArrow(ac._type, ac.track, isSel),
       zIndexOffset: ac._type === 'blocked' ? 1000 : isSel ? 500 : 0,
@@ -520,9 +520,9 @@ function renderList(){
   el.innerHTML = items.map(ac => {
     const cs = ac.flight || ac.icao || '???';
     const isSel = ac.icao === selected;
-    const altStr = ac.alt_baro != null ? `${(Math.round(ac.alt_baro/100)*100).toLocaleString()} ft` : '—';
-    const spdStr = ac.gs != null ? `${Math.round(ac.gs)} kt` : '—';
-    const hdgStr = ac.track != null ? `${Math.round(ac.track)}°` : '—';
+    const altStr = ac.alt_baro != null ? `${(Math.round(ac.alt_baro/100)*100).toLocaleString()} ft` : '-';
+    const spdStr = ac.gs != null ? `${Math.round(ac.gs)} kt` : '-';
+    const hdgStr = ac.track != null ? `${Math.round(ac.track)}°` : '-';
     const badge  = ac._type==='blocked' ? '<span class="badge blk">BLOCKED</span>'
                  : ac._type==='military' ? '<span class="badge mil">MIL</span>' : '';
     const altColor = ac.alt_baro > 30000 ? 'var(--green)' : ac.alt_baro > 10000 ? 'var(--yellow)' : 'var(--red)';
@@ -563,15 +563,15 @@ function selectAc(icao){
 
   document.getElementById('dCall').textContent = cs;
   document.getElementById('dCall').style.color = ac._type==='blocked' ? 'var(--red)' : ac._type==='military' ? 'var(--yellow)' : 'var(--text)';
-  document.getElementById('dSub').innerHTML = `ICAO: <b style="font-family:monospace">${ac.icao}</b> &nbsp;·&nbsp; Type: <b style="color:${color}">${ac._type.toUpperCase()}</b> &nbsp;·&nbsp; Squawk: <b>${ac.squawk||'—'}</b>`;
-  document.getElementById('dAlt').textContent = ac.alt_baro != null ? `${Math.round(ac.alt_baro).toLocaleString()} ft` : '—';
-  document.getElementById('dSpd').textContent = ac.gs != null ? `${Math.round(ac.gs)} kt` : '—';
-  document.getElementById('dHdg').textContent = ac.track != null ? `${Math.round(ac.track)}°` : '—';
-  document.getElementById('dVsi').textContent = ac.baro_rate ? `${ac.baro_rate>0?'+':''}${Math.round(ac.baro_rate)} fpm` : '—';
-  document.getElementById('dSqk').textContent = ac.squawk || '—';
+  document.getElementById('dSub').innerHTML = `ICAO: <b style="font-family:monospace">${ac.icao}</b> &nbsp;·&nbsp; Type: <b style="color:${color}">${ac._type.toUpperCase()}</b> &nbsp;·&nbsp; Squawk: <b>${ac.squawk||'-'}</b>`;
+  document.getElementById('dAlt').textContent = ac.alt_baro != null ? `${Math.round(ac.alt_baro).toLocaleString()} ft` : '-';
+  document.getElementById('dSpd').textContent = ac.gs != null ? `${Math.round(ac.gs)} kt` : '-';
+  document.getElementById('dHdg').textContent = ac.track != null ? `${Math.round(ac.track)}°` : '-';
+  document.getElementById('dVsi').textContent = ac.baro_rate ? `${ac.baro_rate>0?'+':''}${Math.round(ac.baro_rate)} fpm` : '-';
+  document.getElementById('dSqk').textContent = ac.squawk || '-';
   document.getElementById('dIcao').textContent = ac.icao;
-  document.getElementById('dLat').textContent  = ac.lat ? ac.lat.toFixed(5) : '—';
-  document.getElementById('dLon').textContent  = ac.lon ? ac.lon.toFixed(5) : '—';
+  document.getElementById('dLat').textContent  = ac.lat ? ac.lat.toFixed(5) : '-';
+  document.getElementById('dLon').textContent  = ac.lon ? ac.lon.toFixed(5) : '-';
 
   const trail = trails.get(icao) || [];
   document.getElementById('trailInfo').textContent =
@@ -622,7 +622,26 @@ function doSearch(){
     toast(`✈ ${(match.flight||match.icao)} · ${type.toUpperCase()}${match._demo?' (demo)':''}`,
       type==='blocked'?'err':type==='military'?'info':'ok');
   } else {
-    toast(`Not found: "${q}" — may be outside range or not currently airborne`, 'err');
+    // Show history links for offline aircraft
+    document.getElementById('detail').classList.add('on');
+    document.getElementById('dCall').textContent = q;
+    document.getElementById('dCall').style.color = 'var(--yellow)';
+    document.getElementById('dTags').innerHTML = '<span class="dtag" style="color:var(--yellow);border-color:#f59e0b40;background:#f59e0b15">NOT CURRENTLY AIRBORNE</span>';
+    document.getElementById('dAlt').textContent = '—';
+    document.getElementById('dSpd').textContent = '—';
+    document.getElementById('dHdg').textContent = '—';
+    document.getElementById('dVsi').textContent = '—';
+    document.getElementById('dSqk').textContent = '—';
+    document.getElementById('dIcao').textContent = '—';
+    document.getElementById('dLat').textContent = '—';
+    document.getElementById('dLon').textContent = '—';
+    document.getElementById('histCount').textContent = '0 points';
+    document.getElementById('histList').innerHTML = '<div style="padding:8px;font-size:11px;color:var(--muted);text-align:center">Not currently airborne or outside coverage area</div>';
+    document.getElementById('dVerifyADSB').href = 'https://globe.adsbexchange.com/?find=' + encodeURIComponent(q);
+    document.getElementById('dVerifyADSB').textContent = 'Search flight history on ADS-B Exchange ↗';
+    document.getElementById('dVerifyFA').href = 'https://flightaware.com/live/flight/' + encodeURIComponent(q);
+    document.getElementById('dVerifyFR').href = 'https://www.flightradar24.com/' + encodeURIComponent(q);
+    toast(`"${q}" not live — see history links below`, 'info');
   }
 }
 
@@ -677,13 +696,52 @@ function toast(msg, type='info'){
 }
 
 // ════════════════════════════════════════════════════
+// DEAD RECKONING - moves aircraft smoothly between API updates
+// Calculates projected position based on speed + heading
+// ════════════════════════════════════════════════════
+function toRad(d){ return d * Math.PI / 180; }
+function toDeg(r){ return r * 180 / Math.PI; }
+
+function deadReckon(lat, lon, headingDeg, speedKts, elapsedMs){
+  const distKm = (speedKts * 1.852) * (elapsedMs / 3600000);
+  const R = 6371;
+  const d = distKm / R;
+  const bearing = toRad(headingDeg);
+  const lat1 = toRad(lat);
+  const lon1 = toRad(lon);
+  const lat2 = Math.asin(Math.sin(lat1)*Math.cos(d) + Math.cos(lat1)*Math.sin(d)*Math.cos(bearing));
+  const lon2 = lon1 + Math.atan2(Math.sin(bearing)*Math.sin(d)*Math.cos(lat1), Math.cos(d)-Math.sin(lat1)*Math.sin(lat2));
+  return { lat: toDeg(lat2), lon: toDeg(lon2) };
+}
+
+let lastFetchTime = Date.now();
+let animFrame = null;
+
+function animateAircraft(){
+  const elapsed = Date.now() - lastFetchTime;
+  if(elapsed > 500 && viewMode === 'map'){
+    aircraft.forEach((ac, icao) => {
+      if(!ac.lat || !ac.lon || !ac.track || !ac.gs || ac.gs < 30) return;
+      const marker = markers.get(icao);
+      if(!marker) return;
+      const proj = deadReckon(ac.lat, ac.lon, ac.track, ac.gs, elapsed);
+      marker.setLatLng([proj.lat, proj.lon]);
+    });
+  }
+  animFrame = requestAnimationFrame(animateAircraft);
+}
+
+// ════════════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════════════
 fetchData();
-setInterval(fetchData, REFRESH_MS);
+setInterval(() => { lastFetchTime = Date.now(); fetchData(); }, REFRESH_MS);
+animateAircraft();
 </script>
 </body>
 </html>
+
+
 
 
 
